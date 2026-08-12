@@ -8,6 +8,11 @@ dotenv.config();
 
 const app = express();
 
+// Render (and most hosting platforms) sit behind a reverse proxy, so Express
+// needs to trust the X-Forwarded-For header to correctly identify client IPs
+// (required for express-rate-limit to work without throwing).
+app.set("trust proxy", 1);
+
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || "*" }));
 app.use(express.json({ limit: "10kb" }));
 
